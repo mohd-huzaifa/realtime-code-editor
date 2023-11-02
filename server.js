@@ -77,12 +77,13 @@ app.post('/run', (req, res) => {
     if (!fs.existsSync('codes')) {
         fs.mkdirSync('codes');
     }
-    const {code , language} = req.body;
+    const {code , language,input_params} = req.body;
     try{
 
         
     console.log(language);
     console.log(code);
+    console.log(input_params)
     const codes = path.join(__dirname, 'codes');
     const fileName = `${fileId}.${req.body.language}`; //${req.body.language}
     const filePath = path.join(codes, fileName);
@@ -95,6 +96,7 @@ app.post('/run', (req, res) => {
             return
         }
         if (stdout) {
+            console.log(stdout)
             res.send({ output: stdout });
             return;
         }

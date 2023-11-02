@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button } from '@mui/material'
 
 const Home = () => {
     const navigate = useNavigate();
@@ -35,40 +36,45 @@ const Home = () => {
         }
     };
     return (
-        <div className="homePageWrapper">
-            <div className="formWrapper">
-                <div className="header"><h2> Hello coder</h2></div>
+        <div className="container flex h-screen justify-center items-center ">
+            <div className="w-96 p-1 shadow rounded">
+                <div className="text-center font-serif text-2xl fw-bolder">
+                    <h2> Hello coder</h2>
+                </div>
                 {/* <img
                     className="homePageLogo"
                     src="/code-sync.png"
                     alt="code-sync-logo"
                 /> */}
-                <h4 className="mainLabel">Paste invitation ROOM ID</h4>
+                <div>
+                    <h4 className="font-serif text-lg my-1 py-1">Paste invitation room id</h4>
+                </div>
                 <div className="inputGroup">
-                    <input
-                        type="text"
-                        className="inputBox"
+                    <TextField id="room_id" label="ROOM ID" variant="outlined"
                         placeholder="ROOM ID"
                         onChange={(e) => setRoomId(e.target.value)}
                         value={roomId}
                         onKeyUp={handleInputEnter}
+                        sx={{ marginY: '5px' }}
+                        size='small'
                     />
-                    <input
-                        type="text"
-                        className="inputBox"
+
+                    <TextField id="username" label="USERNAME" variant="outlined"
                         placeholder="USERNAME"
                         onChange={(e) => setUsername(e.target.value)}
                         value={username}
                         onKeyUp={handleInputEnter}
+                        sx={{ marginY: '5px' }}
+                        size='small'
                     />
-                    <button className="btn joinBtn" onClick={joinRoom}>
-                        Join
-                    </button>
-                    <span className="createInfo">
+                    <Button variant="contained"
+                        onClick={joinRoom}
+                    >JOIN</Button>
+                    <span className="createInfo font-serif text-sm ">
                         If you don't have an invite then create &nbsp;
                         <a
                             onClick={createNewRoom}
-                            href=""
+                            href="#"
                             className="createNewBtn"
                         >
                             new room
@@ -76,9 +82,9 @@ const Home = () => {
                     </span>
                 </div>
             </div>
-            <footer>
-                <h4>
-                    If you want to get more information go to my github account 
+            <footer className=' container font-serif mx-auto p-2 text-center'>
+                <h4 className=''>
+                    If you want to get more information go to my github account
                     <a href="https://github.com/mohd-huzaifa/">  Link</a>
                 </h4>
             </footer>

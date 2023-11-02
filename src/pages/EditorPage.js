@@ -11,11 +11,14 @@ import {
     useParams,
 } from 'react-router-dom';
 import axios from 'axios'
+import { Button } from '@mui/material';
+import { Textarea } from '@mui/joy';
+
 
 
 
 const EditorPage = () => {
-    const [output , setOutput] = useState("output");
+    const [output, setOutput] = useState("");
     const socketRef = useRef(null);
     const programRef = useRef(null);
     const codeRef = useRef(null);
@@ -86,20 +89,21 @@ const EditorPage = () => {
         // };
     }, []);
 
-   async function handleRun(){
+    async function handleRun() {
         // console.log(data)
         const response = await axios({
             method: 'post',
             url: 'http://localhost:5000/run',
             data: {
-              language: "c",
-              code: codeRef.current
+                language: "c",
+                code: codeRef.current,
+                input_params:inputParameters
             }
-          })
-        console.log( await response)
+        })
+        console.log(await response)
         console.log(response.data.output);
         setOutput(response.data.output)
-         
+
     }
 
 
@@ -122,20 +126,16 @@ const EditorPage = () => {
     }
 
     return (
-        <div className="mainWrap">
-            <div className="aside">
-                <div className="asideInner">
-                    <div className="logo">
-                        {/* <img
-                            className="logoImage"
-                            src="/code-sync.png"
-                            alt="logo"
-                        /> */}
+        <div className="grid grid-cols-4 gap-0">
+            <div className="col-span-1 h-screen relative">
+                <div className="">
+                    <div className="font-serif text-2xl fw-bolder text-center p-1">
                         <h2>Let's code together</h2>
-
                     </div>
-                    <h3>Connected clients ({number})</h3>
-                    <div className="clientsList">
+                    <div className='font-serif text-lg p-1'>
+                        <h3>Connected clients ({number})</h3>
+                    </div>
+                    <div className="block justify-start">
                         {clients.map((client) => (
                             <Client
                                 key={client.socketId}
@@ -144,29 +144,37 @@ const EditorPage = () => {
                         ))}
                     </div>
                 </div>
-                <button className="btn copyBtn runBtn" onClick={() => { handleRun() }}>
-                    Run Code
-                </button>
-                <button className="btn copyBtn" onClick={copyRoomId}>
-                    Copy ROOM ID
-                </button>
-                <button className="btn leaveBtn" onClick={leaveRoom}>
-                    Leave
-                </button>
-            </div>
-            <div className="editorWrap">
-                <Editor
-                    socketRef={socketRef}
-                    roomId={roomId}
-                    onCodeChange={(code) => {
-                        codeRef.current = code;
-                    }}
-                />
-                <div className='inputEditor'>
-                    <textarea id="inputEditor" value={inputParameters} placeholder="Enter input parameters" onChange={(e) => { handleInputParameters(e) }}></textarea>
+
+                <div className="block container text-center absolute bottom-0">
+                    <Button variant='contained' onClick={() => { handleRun() }} sx={{ margin: '5px', padding: '5px', width: "90%" }} >
+                        Run Code
+                    </Button>
+                    <Button variant='contained' onClick={copyRoomId} sx={{ margin: '5px', padding: '5px', width: "90%" }} >
+                        Copy ROOM ID
+                    </Button>
+                    <Button variant='contained' onClick={leaveRoom} sx={{ margin: '5px', padding: '5px', width: "90%" }} >
+                        Leave
+                    </Button>
                 </div>
-                <div className="output">
-                    {output}
+
+            </div>
+            <div className="col-span-3 h-screen relative">
+                <div>
+                    <Editor
+                        socketRef={socketRef}
+                        roomId={roomId}
+                        onCodeChange={(code) => {
+                            codeRef.current = code;
+                        }}
+                    />
+                </div>
+                <div className='absolute bottom-0 container'>
+                    <div className='my-1'>
+                        <Textarea minRows={5} placeholder='Input parameters like this : 1 2 3 4' sx={{ borderRadius: '0px' }} onChange={(e) => { handleInputParameters(e) }} />
+                    </div>
+                    <div className="my-1">
+                        <Textarea minRows={5} value={output} placeholder='Output' sx={{ borderRadius: '0px' }} readOnly="true" />
+                    </div>
                 </div>
             </div>
 
